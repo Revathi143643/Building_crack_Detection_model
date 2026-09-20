@@ -1,0 +1,34 @@
+:root { --ink: #172321; --paper: #f1eee6; --lime: #c8f06b; --muted: #77827a; --line: #d5d4ca; --red: #d85e4d; }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body { background: #deddd3; color: var(--ink); font-family: Georgia, 'Times New Roman', serif; }
+button, input { font: inherit; }
+.page-shell { min-height: 100vh; padding: 28px; background: radial-gradient(circle at 12% 15%, #f4f1e9 0 14%, transparent 36%), linear-gradient(135deg, #d5d4c9, #e9e7dd); }
+.app-frame { max-width: 1180px; min-height: calc(100vh - 56px); margin: auto; padding: 26px 34px 20px; background: var(--paper); border: 1px solid rgba(23,35,33,.12); box-shadow: 0 24px 80px rgba(35,39,30,.13); display: flex; flex-direction: column; }
+.topbar { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--line); padding-bottom: 20px; }
+.brand-mark { display: grid; place-items: center; width: 40px; height: 40px; background: var(--ink); color: var(--lime); font: 700 12px Arial, sans-serif; letter-spacing: .05em; }
+.kicker { margin: 0; color: var(--muted); font: 700 10px Arial, sans-serif; letter-spacing: .15em; text-transform: uppercase; }
+.brand-name { margin: 3px 0 0; font-size: 18px; }
+.service-status { margin-left: auto; font: 700 11px Arial, sans-serif; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.service-status i { display: inline-block; width: 7px; height: 7px; margin-right: 7px; background: #76a342; border-radius: 50%; }
+.content-grid { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, .88fr); gap: clamp(40px, 8vw, 120px); align-items: center; padding: 7vh 5vw; }
+.intro h1 { max-width: 600px; margin: 16px 0 22px; font-size: clamp(42px, 5vw, 76px); font-weight: 400; letter-spacing: -.035em; line-height: .98; }
+.intro-copy { max-width: 450px; margin: 0; color: #5d6860; font-size: 17px; line-height: 1.55; }
+.signal-list { display: grid; gap: 13px; margin-top: 44px; font: 700 11px Arial, sans-serif; text-transform: uppercase; letter-spacing: .08em; }
+.signal-list b { display: inline-block; width: 30px; color: var(--red); }
+.scan-panel { padding: 20px; background: #e6e4d9; border: 1px solid var(--line); }
+.dropzone { position: relative; display: grid; min-height: 290px; place-items: center; overflow: hidden; background: #d6d5ca; border: 1px dashed #939a8d; cursor: pointer; }
+.dropzone input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.dropzone img { width: 100%; height: 290px; object-fit: cover; }
+.dropzone-placeholder { display: grid; gap: 9px; text-align: center; }
+.dropzone-placeholder strong { font-size: 25px; font-weight: 400; }
+.dropzone-placeholder small { color: var(--muted); font: 11px Arial, sans-serif; text-transform: uppercase; letter-spacing: .1em; }
+.scan-actions { display: flex; align-items: center; gap: 12px; padding-top: 16px; }
+.file-name { overflow: hidden; color: var(--muted); font: 12px Arial, sans-serif; text-overflow: ellipsis; white-space: nowrap; }
+.scan-actions button { flex: 0 0 auto; border: 0; padding: 14px 17px; background: var(--ink); color: var(--lime); cursor: pointer; font: 700 11px Arial, sans-serif; text-transform: uppercase; letter-spacing: .08em; }
+.scan-actions button:disabled { opacity: .55; cursor: wait; }
+.scan-actions button span { margin-left: 10px; font-size: 16px; }
+.message { margin: 14px 0 0; font: 12px Arial, sans-serif; }.error { color: var(--red); }
+.result { display: grid; grid-template-columns: 1fr auto; gap: 8px 18px; margin-top: 22px; padding: 18px; border-left: 4px solid; }.result.alert { border-color: var(--red); background: #f3dfd6; }.result.clear { border-color: #76a342; background: #e1ebc9; }.result h2 { margin: 8px 0 0; font-size: 28px; font-weight: 400; }.result > strong { font: 700 27px Arial, sans-serif; }.result > p { grid-column: 1 / -1; margin: 6px 0 0; font: 13px/1.45 Arial, sans-serif; }
+footer { border-top: 1px solid var(--line); padding-top: 16px; color: var(--muted); font: 10px Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; } footer span { padding: 0 8px; }
+@media (max-width: 760px) { .page-shell { padding: 0; }.app-frame { min-height: 100vh; padding: 20px; }.content-grid { grid-template-columns: 1fr; gap: 36px; padding: 48px 0; }.intro h1 { font-size: 48px; }.service-status { font-size: 9px; }.scan-panel { padding: 12px; }.scan-actions { align-items: stretch; flex-direction: column; }.scan-actions button { width: 100%; } }
