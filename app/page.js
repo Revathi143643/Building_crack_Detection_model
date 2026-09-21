@@ -40,8 +40,15 @@ export default function Home() {
     try {
       const formData = new FormData();
       formData.append('file', file);
-      const response = await fetch('/api/predict', { method: 'POST', body: formData });
-      const data = await response.json();
+      let response;
+      let data;
+
+      for (let attempt = 0; attempt < 3; attempt += 1) {
+        response = await fetch('/api/predict', { method: 'POST', body: formData });
+        data = await response.json();
+        if (response.status !== 502 && response.status !== 503) break;
+        if (attempt < 2) await new Promise((resolve) => setTimeout(resolve, 5000));
+      }
 
       if (!response.ok) throw new Error(data.error || 'Analysis failed.');
       setResult(data);
