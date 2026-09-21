@@ -99,7 +99,7 @@ export default function Home() {
               <button type="button" onClick={analyze} disabled={isLoading}>{isLoading ? 'Reading image...' : 'Run assessment'} <span aria-hidden="true">↗</span></button>
             </div>
             {error && <p className="message error">{error}</p>}
-            {result && <div className={`result ${result.has_crack ? `severity-${result.severity.toLowerCase()}` : 'clear'}`}><div><p className="kicker">Assessment result</p><h2>{result.label}</h2>{result.has_crack && <span className="severity-badge">{result.severity} severity</span>}</div><strong>{Math.round(result.confidence * 100)}%</strong><p>{result.has_crack ? result.recommendation || getSeverityMessage(result.severity) : 'No visible crack-like pattern detected in this image.'}</p><small className="result-note">Confidence-based screening only. It is not a structural safety certification.</small></div>}
+            {result && <div className={`result ${result.has_crack ? `severity-${result.severity?.toLowerCase() || 'low'}` : 'clear'}`}><div><p className="kicker">Assessment result</p><h2>{result.label}</h2>{result.has_crack && result.severity && <span className="severity-badge">{result.severity} severity</span>}</div><strong>{Math.round(result.confidence * 100)}%</strong><p>{result.has_crack ? result.recommendation || getSeverityMessage(result.severity) : 'No visible crack-like pattern detected in this image.'}</p><small className="result-note">Confidence-based screening only. It is not a structural safety certification.</small></div>}
           </section>
         </div>
         <footer>AI screening tool <span>•</span> Not a structural safety certification</footer>
