@@ -59,6 +59,12 @@ export default function Home() {
     }
   }
 
+  function getSeverityMessage(severity) {
+    if (severity === 'High') return 'High concern: arrange an on-site structural inspection as soon as possible.';
+    if (severity === 'Medium') return 'Medium concern: schedule an inspection and monitor this area for changes.';
+    return 'Low concern: document this area and inspect again if the crack grows or changes.';
+  }
+
   return (
     <main className="page-shell">
       <section className="app-frame">
@@ -93,7 +99,7 @@ export default function Home() {
               <button type="button" onClick={analyze} disabled={isLoading}>{isLoading ? 'Reading image...' : 'Run assessment'} <span aria-hidden="true">↗</span></button>
             </div>
             {error && <p className="message error">{error}</p>}
-            {result && <div className={`result ${result.has_crack ? 'alert' : 'clear'}`}><div><p className="kicker">Assessment result</p><h2>{result.label}</h2></div><strong>{Math.round(result.confidence * 100)}%</strong><p>{result.has_crack ? 'Visible crack-like patterns detected. Arrange an on-site inspection.' : 'No visible crack-like pattern detected in this image.'}</p></div>}
+            {result && <div className={`result ${result.has_crack ? `severity-${result.severity.toLowerCase()}` : 'clear'}`}><div><p className="kicker">Assessment result</p><h2>{result.label}</h2>{result.has_crack && <span className="severity-badge">{result.severity} severity</span>}</div><strong>{Math.round(result.confidence * 100)}%</strong><p>{result.has_crack ? result.recommendation || getSeverityMessage(result.severity) : 'No visible crack-like pattern detected in this image.'}</p><small className="result-note">Confidence-based screening only. It is not a structural safety certification.</small></div>}
           </section>
         </div>
         <footer>AI screening tool <span>•</span> Not a structural safety certification</footer>

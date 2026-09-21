@@ -1,4 +1,4 @@
-:root { --ink: #172321; --paper: #f1eee6; --lime: #c8f06b; --muted: #77827a; --line: #d5d4ca; --red: #d85e4d; }
+:root { --ink: #172321; --paper: #f1eee6; --lime: #c8f06b; --muted: #77827a; --line: #d5d4ca; --red: #d85e4d; --amber: #bd7b2c; --yellow: #d5a629; }
 * { box-sizing: border-box; }
 html, body { margin: 0; min-height: 100%; }
 body { background: #deddd3; color: var(--ink); font-family: Georgia, 'Times New Roman', serif; }
@@ -29,6 +29,6 @@ button, input { font: inherit; }
 .scan-actions button:disabled { opacity: .55; cursor: wait; }
 .scan-actions button span { margin-left: 10px; font-size: 16px; }
 .message { margin: 14px 0 0; font: 12px Arial, sans-serif; }.error { color: var(--red); }
-.result { display: grid; grid-template-columns: 1fr auto; gap: 8px 18px; margin-top: 22px; padding: 18px; border-left: 4px solid; }.result.alert { border-color: var(--red); background: #f3dfd6; }.result.clear { border-color: #76a342; background: #e1ebc9; }.result h2 { margin: 8px 0 0; font-size: 28px; font-weight: 400; }.result > strong { font: 700 27px Arial, sans-serif; }.result > p { grid-column: 1 / -1; margin: 6px 0 0; font: 13px/1.45 Arial, sans-serif; }
+.result { display: grid; grid-template-columns: 1fr auto; gap: 8px 18px; margin-top: 22px; padding: 18px; border-left: 4px solid; }.result.severity-high { border-color: var(--red); background: #f3dfd6; }.result.severity-medium { border-color: var(--amber); background: #f3e8d3; }.result.severity-low { border-color: var(--yellow); background: #f4edcf; }.result.clear { border-color: #76a342; background: #e1ebc9; }.result h2 { margin: 8px 0 0; font-size: 28px; font-weight: 400; }.result > strong { font: 700 27px Arial, sans-serif; }.result > p { grid-column: 1 / -1; margin: 6px 0 0; font: 13px/1.45 Arial, sans-serif; }.severity-badge { display: inline-block; margin-top: 10px; padding: 5px 8px; font: 700 10px Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; border: 1px solid currentColor; }.result-note { grid-column: 1 / -1; color: var(--muted); font: 10px/1.4 Arial, sans-serif; }
 footer { border-top: 1px solid var(--line); padding-top: 16px; color: var(--muted); font: 10px Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; } footer span { padding: 0 8px; }
 @media (max-width: 760px) { .page-shell { padding: 0; }.app-frame { min-height: 100vh; padding: 20px; }.content-grid { grid-template-columns: 1fr; gap: 36px; padding: 48px 0; }.intro h1 { font-size: 48px; }.service-status { font-size: 9px; }.scan-panel { padding: 12px; }.scan-actions { align-items: stretch; flex-direction: column; }.scan-actions button { width: 100%; } }

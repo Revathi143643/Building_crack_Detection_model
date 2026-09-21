@@ -49,6 +49,15 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
+def get_severity(confidence: float) -> tuple[str, str]:
+    percentage = confidence * 100
+    if percentage >= 85:
+        return "High", "Arrange a professional inspection as soon as possible."
+    if percentage >= 70:
+        return "Medium", "Schedule a professional inspection and monitor the area."
+    return "Low", "Document the area and arrange an inspection if the crack changes."
+
+
 @app.post("/predict")
 async def predict(file: Annotated[UploadFile, File(...)]) -> dict[str, object]:
     content = await file.read()
@@ -67,8 +76,15 @@ async def predict(file: Annotated[UploadFile, File(...)]) -> dict[str, object]:
         confidence = float(probabilities[crack_index])
         has_crack = crack_index == 1
 
+    severity = None
+    recommendation = None
+    if has_crack:
+        severity, recommendation = get_severity(confidence)
+
     return {
         "has_crack": has_crack,
         "label": "Crack detected" if has_crack else "No crack detected",
         "confidence": round(confidence, 4),
+        "severity": severity,
+        "recommendation": recommendation,
     }
