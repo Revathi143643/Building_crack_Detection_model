@@ -66,6 +66,7 @@ export default function Home() {
   }
 
   const confidencePercent = result ? Math.round(result.confidence * 100) : 0;
+  const imageSize = file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : '';
 
   return (
     <main className="page-shell">
@@ -107,16 +108,16 @@ export default function Home() {
               <input id="image-upload" type="file" accept="image/jpeg,image/png,image/webp" onChange={selectFile} />
             </label>
             <div className="scan-actions">
-              <div className="file-detail"><span className="file-dot" /> <span className="file-name">{file ? file.name : 'No image selected'}</span></div>
+              <div className="file-detail"><span className="file-dot" /> <span className="file-name">{file ? file.name : 'No image selected'}{imageSize && <small>{imageSize}</small>}</span></div>
               <button type="button" onClick={analyze} disabled={isLoading}>{isLoading ? 'Reading image...' : 'Run assessment'} <span aria-hidden="true">&#8599;</span></button>
             </div>
-            <p className="privacy-note">Your image is used for this assessment and is not stored by the interface.</p>
+            <p className="privacy-note">Private by design. Images are processed for this assessment and are not stored by the interface.</p>
             {error && <p className="message error">{error}</p>}
             {result && <div className={`result ${result.has_crack ? `severity-${result.severity?.toLowerCase() || 'low'}` : 'clear'}`}>
               <div className="result-header"><div><p className="kicker">Assessment result</p><h2>{result.label}</h2>{result.has_crack && result.severity && <span className="severity-badge">{result.severity} severity</span>}</div><div className="score"><strong>{confidencePercent}%</strong><span>confidence</span></div></div>
               <div className="confidence-track"><span style={{ width: `${confidencePercent}%` }} /></div>
               <p className="result-message">{result.has_crack ? result.recommendation || getSeverityMessage(result.severity) : 'No visible crack-like pattern detected in this image.'}</p>
-              <small className="result-note">Confidence-based screening only. It is not a structural safety certification.</small>
+              <small className="result-note">This is a visual screening signal, not a structural safety certification. Recheck uncertain images from a closer angle.</small>
             </div>}
           </section>
         </div>

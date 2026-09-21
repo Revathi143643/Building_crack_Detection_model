@@ -1,3 +1,4 @@
+from io import BytesIO
 from pathlib import Path
 import os
 from typing import Annotated
@@ -28,7 +29,7 @@ app.add_middleware(CORSMiddleware, allow_origins=allowed_origins, allow_methods=
 
 def prepare_image(content: bytes) -> np.ndarray:
     try:
-        image = Image.open(__import__("io").BytesIO(content)).convert("RGB")
+        image = Image.open(BytesIO(content)).convert("RGB")
     except Exception as exc:
         raise HTTPException(status_code=400, detail="The uploaded file is not a valid image.") from exc
 
@@ -39,7 +40,24 @@ def prepare_image(content: bytes) -> np.ndarray:
     if not isinstance(shape, tuple) or len(shape) != 4 or shape[1] is None or shape[2] is None:
         raise HTTPException(status_code=500, detail="The model has no fixed image input shape.")
     image = image.resize((int(shape[2]), int(shape[1])))
+    # The saved model contains the MobileNetV2 preprocessing layer and expects
+    # float pixels in the 0-255 range at its public input.
     return np.asarray(image, dtype=np.float32)[None, ...]
+
+
+def decode_prediction(output: np.ndarray) -> tuple[bool, float]:
+    values = np.asarray(output, dtype=np.float32).reshape(-1)
+    if values.size == 0:
+        raise HTTPException(status_code=500, detail="The model returned no prediction.")
+
+    if values.size == 1:
+        value = float(values[0])
+        probability = value if 0 <= value <= 1 else float(tf.math.sigmoid(value).numpy())
+        return probability >= 0.5, probability if probability >= 0.5 else 1 - probability
+
+    probabilities = tf.nn.softmax(values).numpy()
+    crack_index = int(np.argmax(probabilities))
+    return crack_index == 1, float(probabilities[crack_index])
 
 
 @app.get("/health")
@@ -64,17 +82,8 @@ async def predict(file: Annotated[UploadFile, File(...)]) -> dict[str, object]:
     if len(content) > MAX_FILE_SIZE:
         raise HTTPException(status_code=413, detail="Images must be 10 MB or smaller.")
     batch = prepare_image(content)
-    output = np.asarray(model.predict(batch, verbose=0)).squeeze()
-
-    if np.ndim(output) == 0:
-        probability = float(output)
-        has_crack = probability >= 0.5
-        confidence = probability if has_crack else 1 - probability
-    else:
-        probabilities = tf.nn.softmax(output).numpy()
-        crack_index = int(np.argmax(probabilities))
-        confidence = float(probabilities[crack_index])
-        has_crack = crack_index == 1
+    output = model.predict(batch, verbose=0)
+    has_crack, confidence = decode_prediction(output)
 
     severity = None
     recommendation = None
