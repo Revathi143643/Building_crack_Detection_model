@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 from typing import Annotated
 
 import numpy as np
@@ -17,7 +18,12 @@ except Exception as exc:
     model_error = str(exc)
 
 app = FastAPI(title="Structure Scan model API")
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["POST"], allow_headers=["*"])
+allowed_origins = [
+    origin.strip()
+    for origin in os.getenv("MODEL_API_ALLOWED_ORIGINS", "http://localhost:3000").split(",")
+    if origin.strip()
+]
+app.add_middleware(CORSMiddleware, allow_origins=allowed_origins, allow_methods=["POST"], allow_headers=["*"])
 
 
 def prepare_image(content: bytes) -> np.ndarray:

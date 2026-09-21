@@ -11,6 +11,8 @@ pip install -r model/requirements.txt
 uvicorn model.index:app --reload --port 8000
 ```
 
+Set `MODEL_API_ALLOWED_ORIGINS` on the Python service to a comma-separated list of frontend origins in production, for example `https://your-app.vercel.app`.
+
 ## Run the web app
 
 ```powershell
