@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: building-crack-detection-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: MODEL_API_ALLOWED_ORIGINS
+        sync: false

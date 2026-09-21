@@ -13,6 +13,10 @@ uvicorn model.index:app --reload --port 8000
 
 Set `MODEL_API_ALLOWED_ORIGINS` on the Python service to a comma-separated list of frontend origins in production, for example `https://your-app.vercel.app`.
 
+### Deploy the model API to Render
+
+Create a new Render Blueprint from this repository and select `render.yaml`. Set `MODEL_API_ALLOWED_ORIGINS` to the deployed frontend origin, then copy the Render service URL into the Vercel `MODEL_API_URL` variable.
+
 ## Run the web app
 
 ```powershell
